@@ -43,27 +43,23 @@ class FlickrCollage
 
     height = 0
     rows.times do |i|
-      page = Magick::Rectangle.new(0, 0, 0, 0)
-      row = create_image_row(no_of_images: @no_of_images / rows + (i.positive? && i <= @no_of_images % rows ? 1 : 0))
+      row = create_image_row(no_of_images: images_per_row(rows, i))
       collage_list << row.scale(width.to_f / row.columns)
-      page.y = height
+      collage_list.page = Magick::Rectangle.new(0, 0, 0, height)
       height += collage_list.rows
-      collage_list.page = page
     end
 
     @collage = collage_list.mosaic
   end
 
   def create_image_row(no_of_images:, height: 300)
-    page = Magick::Rectangle.new(0, 0, 0, 0)
     row = Magick::ImageList.new
 
     width = 0
     no_of_images.times do
       row << @image_list.scale(height.to_f / @image_list.rows)
-      page.x = width
+      row.page = Magick::Rectangle.new(0, 0, width, 0)
       width += row.columns
-      row.page = page
       increment_image_list_scene
     end
 
@@ -74,5 +70,9 @@ class FlickrCollage
     @image_list.scene += 1
   rescue
     @image_list.scene = 0
+  end
+
+  def images_per_row(rows, i)
+    @no_of_images / rows + (i.positive? && i <= @no_of_images % rows ? 1 : 0)
   end
 end
