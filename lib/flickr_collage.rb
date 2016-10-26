@@ -1,5 +1,7 @@
 require 'flickr_collage/version'
+require 'flickr_collage/errors'
+require 'flickr_collage/dictionary'
 
-module FlickrCollage
+class FlickrCollage
   # Your code goes here...
 end
