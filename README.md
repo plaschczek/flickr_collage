@@ -27,6 +27,15 @@ export FLICKR_API_KEY='... Your API key ...'
 export FLICKR_SHARED_SECRET='... Your shared secret ...'
 ```
 
+Or in your Ruby file:
+
+```ruby
+require 'flickr_collage'
+
+FlickRaw.api_key="... Your API key ..."
+FlickRaw.shared_secret="... Your shared secret ..."
+```
+
 For more details take a look at (https://github.com/hanklords/flickraw#usage)
 
 ## License

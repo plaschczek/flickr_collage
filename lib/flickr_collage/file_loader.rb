@@ -1,4 +1,3 @@
-require 'flickr_collage'
 require 'open-uri'
 
 class FlickrCollage
