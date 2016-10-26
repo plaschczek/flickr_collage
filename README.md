@@ -19,7 +19,15 @@ bundle
 
 ## Usage
 
-TODO: Write usage instructions here
+First you have to initialize FlickRaw.api_key and FlickRaw.shared_secred.<br />
+For example export the following env vars:
+
+```console
+export FLICKR_API_KEY='... Your API key ...'
+export FLICKR_SHARED_SECRET='... Your shared secret ...'
+```
+
+For more details take a look at (https://github.com/hanklords/flickraw#usage)
 
 ## License
 
