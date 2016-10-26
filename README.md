@@ -2,6 +2,7 @@
 
 Flickr Collage queries the Flickr API for the top-rated image by search keywords and assembles a collage grid from this images to a new file.
 
+![](tmp/fruits.jpg)
 
 ## Installation
 
@@ -37,6 +38,47 @@ FlickRaw.shared_secret="... Your shared secret ..."
 ```
 
 For more details take a look at (https://github.com/hanklords/flickraw#usage)
+
+### Examples
+
+To create a collage with 10 random images, instantiate a new FlickrCollage and save the image:
+
+```ruby
+FlickrCollage.new.save_image
+```
+
+Full options example (9 images, 4 by keyword, 5 random in 2 rows as squares, saved as 'tmp/fruits.jpg'):
+
+```ruby
+FlickrCollage.new(
+  ['strawberry', 'kiwi', 'cherry', 'limes'],
+  filename: 'fruits.jpg',
+  dir: 'tmp',
+  no_of_images: 9,
+  rows: 2,
+  squares: true
+).save_image
+```
+
+### Options
+
+**keynames:**<br/>
+Array with keynames<br />
+
+**filename:**<br />
+collage filename, default *'collage.jpg'*<br />
+
+**dir:**<br />
+directory to save the collage, has to exist, default *'.'*<br />
+
+**no_of_images:**<br />
+number of images, default *keynames.length* and without keynames Array *10*<br />
+
+**rows:**<br />
+number of collage rows, default *sqrt(no_of_images).floor*<br />
+
+**squares:**<br />
+boolean, if true images squared
 
 ## License
 

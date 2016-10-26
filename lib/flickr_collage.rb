@@ -9,11 +9,12 @@ require 'flickraw'
 require 'flickr_collage/initializer'
 
 class FlickrCollage
-  attr_accessor :keywords, :random_keywords, :unsuccessful_keywords, :image_list, :collage, :dir, :filename
+  attr_accessor :keywords, :random_keywords, :unsuccessful_keywords, :image_list, :collage, :dir, :filename, :squares
 
-  def initialize(keywords = [], filename: 'collage.jpg', dir: '.', no_of_images: nil, rows: nil)
+  def initialize(keywords = [], filename: 'collage.jpg', dir: '.', no_of_images: nil, rows: nil, squares: false)
     @filename = filename
     @dir = dir
+    @squares = squares
     @no_of_images = no_of_images || (keywords.empty? ? 10 : keywords.length)
     assign_and_extend_keywords(keywords)
 
@@ -57,7 +58,7 @@ class FlickrCollage
 
     width = 0
     no_of_images.times do
-      row << @image_list.scale(height.to_f / @image_list.rows)
+      row << (@squares ? @image_list.resize_to_fill(height) : @image_list.scale(height.to_f / @image_list.rows))
       row.page = Magick::Rectangle.new(0, 0, width, 0)
       width += row.columns
       increment_image_list_scene
