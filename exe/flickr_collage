@@ -19,7 +19,7 @@ command = Cri::Command.define do
   option :d, :dir, 'directory to store collage', argument: :optional
   option :f, :filename, 'filename for collage', argument: :optional
   option :k, :keywords, 'keywords to search for, comma seperated', argument: :optional
-  option :n, :no_of_images, 'number of images (default 10)', argument: :optional
+  option :n, :no_of_images, 'number of images (default number of keywords or 10)', argument: :optional
   option :r, :rows, "number of collage's rows", argument: :optional
   option :s, :squares, 'images squared on collage'
 
