@@ -12,7 +12,7 @@ class FlickrCollage
     end
 
     def self.words
-      @words ||= File.open(@path).read.to_s.split("\n")
+      @words ||= File.open(@path.to_s).read.to_s.split("\n")
     rescue
       raise Errors::DictionaryNotFound
     end

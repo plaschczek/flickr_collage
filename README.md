@@ -1,6 +1,6 @@
 # Flickr Collage
 
-Flickr Collage queries the Flickr API for the top-rated image by search keywords and assembles a collage grid from this images to a new file.
+**Flickr Collage** queries the Flickr API for the top-rated image by search keywords and assembles a collage grid from this images to a new file.
 
 ![](tmp/fruits.jpg)
 
@@ -17,6 +17,8 @@ And then execute:
 ```console
 bundle
 ```
+
+You also have to install **ImageMagick**. For more details take a look at (https://github.com/rmagick/rmagick).
 
 ## Usage
 
@@ -37,14 +39,14 @@ FlickRaw.api_key="... Your API key ..."
 FlickRaw.shared_secret="... Your shared secret ..."
 ```
 
-For more details take a look at (https://github.com/hanklords/flickraw#usage)
+For more details take a look at (https://github.com/hanklords/flickraw#usage).
 
 ### Examples
 
 To create a collage with 10 random images, instantiate a new FlickrCollage and save the image:
 
 ```ruby
-FlickrCollage.new.save_image
+FlickrCollage.new.save
 ```
 
 Full options example (9 images, 4 by keyword, 5 random in 2 rows as squares, saved as 'tmp/fruits.jpg'):
@@ -57,28 +59,21 @@ FlickrCollage.new(
   no_of_images: 9,
   rows: 2,
   squares: true
-).save_image
+).save
 ```
 
 ### Options
 
-**keynames:**<br/>
-Array with keynames<br />
+```
+FlickrCollage.new(keynames, filename:, dir:, no_of_images:, rows:, squares:)
 
-**filename:**<br />
-collage filename, default *'collage.jpg'*<br />
-
-**dir:**<br />
-directory to save the collage, has to exist, default *'.'*<br />
-
-**no_of_images:**<br />
-number of images, default *keynames.length* and without keynames Array *10*<br />
-
-**rows:**<br />
-number of collage rows, default *sqrt(no_of_images).floor*<br />
-
-**squares:**<br />
-boolean, if true images squared
+    keynames: Array with keynames
+    filename: collage filename, default 'collage.jpg'
+         dir: directory to save the collage, has to exist, default '.'
+no_of_images: number of images, default number of keynames and without keynames 10
+        rows: number of collage rows, default sqrt(no_of_images).floor
+     squares: boolean, if true images squared
+```
 
 ## License
 

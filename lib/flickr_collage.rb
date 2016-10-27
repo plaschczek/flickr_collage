@@ -23,11 +23,21 @@ class FlickrCollage
     create_collage(rows: rows || Math.sqrt(@no_of_images).floor)
   end
 
-  def save_image
-    @collage.write(File.join(dir, filename))
-  rescue
+  def save(force: false)
     raise Errors::DirNotFound unless File.directory?(dir.to_s)
-    raise Error::FileCannotBeSaved
+
+    path = File.join(dir, filename)
+    raise Errors::FileExist if !force && File.exist?(path)
+
+    @collage.write(File.join(dir, filename))
+  rescue Errors::DirNotFound, Errors::FileExist
+    raise
+  rescue => e
+    raise Errors::FileCannotBeSaved, "#{e.class}: #{e.message}"
+  end
+
+  def save!
+    save(force: true)
   end
 
   private
