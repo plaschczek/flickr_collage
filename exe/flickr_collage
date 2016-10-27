@@ -1,0 +1,92 @@
+#!/usr/bin/env ruby
+
+require 'flickr_collage'
+require 'highline'
+require 'cri'
+
+command = Cri::Command.define do
+  name        'flickr_collage'
+  usage       'flickr_collage [options]'
+  summary     'Makes a collage of Flickr images by keywords'
+  description '
+    Flickr Collage queries the Flickr API for the top-rated image by search
+    keywords and assembles a collage grid from this images to a new file.
+
+    Example:
+    flickr_collage -k strawberry,kiwi,cherry,limes -f fruits.jpg -s
+  '
+
+  option :d, :dir, 'directory to store collage', argument: :optional
+  option :f, :filename, 'filename for collage', argument: :optional
+  option :k, :keywords, 'keywords to search for, comma seperated', argument: :optional
+  option :n, :no_of_images, 'number of images (default 10)', argument: :optional
+  option :r, :rows, "number of collage's rows", argument: :optional
+  option :s, :squares, 'images squared on collage'
+
+  flag :h, :help, 'show help for this command' do |_value, cmd|
+    puts cmd.help
+    exit 0
+  end
+
+  run do |opts, _args, _cmd|
+    cli = HighLine.new
+
+    exit 0 unless opts[:keywords] ||
+      cli.agree('Random collage without keywords? (Type `flickr_collage -h` for help.) [y/n]')
+
+    options = { keywords: opts.fetch(:keywords, '').split(',') }
+
+    options[:dir] = opts.fetch(:dir) if opts[:dir]
+    options[:filename] = opts.fetch(:filename) if opts[:filename]
+    options[:no_of_images] = opts.fetch(:no_of_images).to_i if opts[:no_of_images]
+    options[:rows] = opts.fetch(:rows).to_i if opts[:rows]
+    options[:squares] = opts.key?(:squares) if opts[:squares]
+
+    begin
+      puts 'Searching and loading images'
+      flickr_collage = FlickrCollage.new(**options)
+
+    rescue FlickrCollage::Errors::DictionaryNotFound
+      puts "Dictionary not found for #{FlickrCollage::Dictionary.path}"
+      dict_path = cli.ask('Enter path for dictionary or leave it blank to cancel.')
+      exit 0 if dict_path == ''
+      FlickrCollage::Dictionary.path = dict_path
+      retry
+
+    rescue => e
+      puts "Error while execution: #{e.message}"
+      exit 1
+    end
+
+    if flickr_collage.unsuccessful_keywords
+      keys = flickr_collage.unsuccessful_keywords.keys & options[:keywords]
+      puts "Note: No image found for the following keyword(s): #{keys.join(', ')}" if keys.any?
+    end
+
+    begin
+      flickr_collage.save
+
+    rescue FlickrCollage::Errors::DirNotFound
+      puts "Directory #{flickr_collage.dir} not found, please ensure that the directory exists."
+
+    rescue FlickrCollage::Errors::FileExist
+      if cli.agree("File exists. Overwrite #{File.join(flickr_collage.dir, flickr_collage.filename)}? [y/n]")
+        flickr_collage.save!
+      else
+        filename = cli.ask("Enter new filename (dir: #{flickr_collage.dir}) or leave it blank to cancel.")
+        exit 0 if filename == ''
+        flickr_collage.filename = filename
+        retry
+      end
+
+    rescue FlickrCollage::Errors::FileCannotBeSaved
+      puts 'Error: File could no be saved.'
+      exit 1
+
+    rescue => e
+      puts "Error while execution: #{e.message}"
+    end
+  end
+end
+
+command.run(ARGV)

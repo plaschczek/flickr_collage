@@ -68,6 +68,20 @@ FlickrCollage.new(
 ).save
 ```
 
+### Command Line Examples
+
+The same full options example as before:
+
+```console
+flickr_collage -k strawberry,kiwi,cherry,limes -f fruits_example.jpg -d tmp -n 9 -r 2 -s
+```
+
+And the command line help:
+
+```console
+flickr_collage -h
+```
+
 ### Options
 
 ```

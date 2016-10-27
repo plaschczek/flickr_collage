@@ -20,7 +20,7 @@ class FlickrCollage
 
     def load_flickr_file(keyword, url_method)
       open(flickr_file_url(keyword, url_method)) do |uri|
-        raise Errors::NoImageFound unless uri.is_a? Tempfile
+        raise Errors::NoImageFound unless uri.is_a? ::Tempfile
         return Magick::Image.from_blob(uri.read).first
       end
     rescue Errors::NoImageFound
