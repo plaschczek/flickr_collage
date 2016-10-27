@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Ingo Plaschczek']
   spec.email         = ['github@plaschczek.de']
 
-  spec.summary       = %q{Creates a collage of Flickr images by keywords}
+  spec.summary       = %q{Makes a collage of Flickr images by keywords}
   spec.description   = %q{Flickr Collage queries the Flickr API for the top-rated image by search keywords and assembles a collage grid from this images to a new file.}
   spec.homepage      = 'https://github.com/plaschczek/flickr_collage'
   spec.license       = 'MIT'

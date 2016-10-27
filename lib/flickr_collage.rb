@@ -11,7 +11,7 @@ require 'flickr_collage/initializer'
 class FlickrCollage
   attr_accessor :keywords, :random_keywords, :unsuccessful_keywords, :image_list, :collage, :dir, :filename, :squares
 
-  def initialize(keywords = [], filename: 'collage.jpg', dir: '.', no_of_images: nil, rows: nil, squares: false)
+  def initialize(keywords: [], filename: 'collage.jpg', dir: '.', no_of_images: nil, rows: nil, squares: false)
     @filename = filename
     @dir = dir
     @squares = squares
@@ -24,12 +24,8 @@ class FlickrCollage
   end
 
   def save(force: false)
-    raise Errors::DirNotFound unless File.directory?(dir.to_s)
-
-    path = File.join(dir, filename)
-    raise Errors::FileExist if !force && File.exist?(path)
-
-    @collage.write(File.join(dir, filename))
+    path = prepare_and_check_path(force)
+    @collage.write(path)
   rescue Errors::DirNotFound, Errors::FileExist
     raise
   rescue => e
@@ -85,5 +81,14 @@ class FlickrCollage
 
   def images_per_row(rows, i)
     @no_of_images / rows + (i.positive? && i <= @no_of_images % rows ? 1 : 0)
+  end
+
+  def prepare_and_check_path(force)
+    raise Errors::DirNotFound unless File.directory?(dir.to_s)
+
+    path = File.join(dir, filename)
+    raise Errors::FileExist if !force && File.exist?(path)
+
+    path
   end
 end

@@ -6,6 +6,16 @@
 
 ## Installation
 
+You have to install **ImageMagick**. On Ubuntu for example, you can run:
+
+```
+sudo apt-get install libmagickwand-dev
+```
+
+For more details take a look at (https://github.com/rmagick/rmagick#prerequisites).
+
+**Installing via Bundler**
+
 Add this line to your application's Gemfile:
 
 ```ruby
@@ -17,8 +27,6 @@ And then execute:
 ```console
 bundle
 ```
-
-You also have to install **ImageMagick**. For more details take a look at (https://github.com/rmagick/rmagick).
 
 ## Usage
 
@@ -39,8 +47,6 @@ FlickRaw.api_key="... Your API key ..."
 FlickRaw.shared_secret="... Your shared secret ..."
 ```
 
-For more details take a look at (https://github.com/hanklords/flickraw#usage).
-
 ### Examples
 
 To create a collage with 10 random images, instantiate a new FlickrCollage and save the image:
@@ -49,12 +55,12 @@ To create a collage with 10 random images, instantiate a new FlickrCollage and s
 FlickrCollage.new.save
 ```
 
-Full options example (9 images, 4 by keyword, 5 random in 2 rows as squares, saved as 'tmp/fruits.jpg'):
+Full options example (9 images, 4 by keyword, 5 random in 2 rows as squares, saved as 'tmp/fruits_example.jpg'):
 
 ```ruby
 FlickrCollage.new(
-  ['strawberry', 'kiwi', 'cherry', 'limes'],
-  filename: 'fruits.jpg',
+  keywords: ['strawberry', 'kiwi', 'cherry', 'limes'],
+  filename: 'fruits_example.jpg',
   dir: 'tmp',
   no_of_images: 9,
   rows: 2,
@@ -65,12 +71,12 @@ FlickrCollage.new(
 ### Options
 
 ```
-FlickrCollage.new(keynames, filename:, dir:, no_of_images:, rows:, squares:)
+FlickrCollage.new(keywords:, filename:, dir:, no_of_images:, rows:, squares:)
 
-    keynames: Array with keynames
+    keywords: Array with keywords
     filename: collage filename, default 'collage.jpg'
          dir: directory to save the collage, has to exist, default '.'
-no_of_images: number of images, default number of keynames and without keynames 10
+no_of_images: number of images, default number of keywords and without keywords 10
         rows: number of collage rows, default sqrt(no_of_images).floor
      squares: boolean, if true images squared
 ```

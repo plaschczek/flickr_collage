@@ -2,8 +2,8 @@ require 'spec_helper'
 
 RSpec.describe FlickrCollage do
   def random_image
-    Magick::Image.new(200 + rand(200), 200 + rand(200)) do
-      self.background_color = "#%06x" % (rand * 0xffffff)
+    Magick::Image.new(400 + rand(200), 400 + rand(200)) do
+      self.background_color = Kernel.format('#%06x', rand * 0xffffff)
     end
   end
 
@@ -19,13 +19,14 @@ RSpec.describe FlickrCollage do
 
   let(:keywords) { [] }
   let(:no_of_images) { nil }
-  let(:keywords_count) { no_of_images || (keywords.length > 0 ? keywords.length : 10) }
+  let(:keywords_count) { no_of_images || (!keywords.empty? ? keywords.length : 10) }
 
-  subject(:flickr_collage) { FlickrCollage.new(keywords, no_of_images: no_of_images) }
+  subject(:flickr_collage) { FlickrCollage.new(keywords: keywords, no_of_images: no_of_images) }
 
   before do
     allow(FlickrCollage::FileLoader).to receive(:image_list).and_return(random_image_list(keywords_count))
     allow(FlickrCollage::Dictionary).to receive(:words).and_return(['color'])
+    allow_any_instance_of(Magick::Image).to receive(:write).and_return(true)
   end
 
   context '.new' do
@@ -50,7 +51,7 @@ RSpec.describe FlickrCollage do
     end
 
     context 'with 3 keywords' do
-      let(:keywords) { ['violet', 'green', 'blue'] }
+      let(:keywords) { %w(violet green blue) }
 
       it 'has 3 images unless no_of_images set' do
         expect(flickr_collage.image_list.count).to eq(3)
@@ -72,40 +73,36 @@ RSpec.describe FlickrCollage do
 
   context '#save' do
     it 'raises FileExist error if filename exists' do
-      @flickr_collage = FlickrCollage.new(filename: 'tmp/fruits.jpg')
-
+      @flickr_collage = FlickrCollage.new(dir: 'tmp', filename: 'fruits.jpg')
       expect { @flickr_collage.save }.to raise_exception(FlickrCollage::Errors::FileExist)
     end
 
     it 'raises DirNotFound error unless dir exists' do
       @flickr_collage = FlickrCollage.new(dir: 'uiaeuiaeuiae')
-
       expect { @flickr_collage.save }.to raise_exception(FlickrCollage::Errors::DirNotFound)
     end
 
-    it 'raises FileCannotBeSaved error without write permissions' do
+    it 'raises FileCannotBeSaved error on any other error' do
+      allow_any_instance_of(Magick::Image).to receive(:write).and_raise(StandardError)
       @flickr_collage = FlickrCollage.new(dir: '/')
-
       expect { @flickr_collage.save }.to raise_exception(FlickrCollage::Errors::FileCannotBeSaved)
     end
   end
 
   context '#save!' do
     it 'saves rspec_color_collage.jpg at tmp even if file exists' do
-      @flickr_collage = FlickrCollage.new(dir: 'tmp', filename: 'rspec_color_collage.jpg')
-      @flickr_collage.save!
+      @flickr_collage = FlickrCollage.new(dir: 'tmp', filename: 'fruits.jpg')
       expect(@flickr_collage.save!).to be_truthy
     end
 
     it 'raises DirNotFound error unless dir exists' do
       @flickr_collage = FlickrCollage.new(dir: 'uiaeuiaeuiae')
-
       expect { @flickr_collage.save! }.to raise_exception(FlickrCollage::Errors::DirNotFound)
     end
 
-    it 'raises FileCannotBeSaved error without write permissions' do
+    it 'raises FileCannotBeSaved error on any other error' do
+      allow_any_instance_of(Magick::Image).to receive(:write).and_raise(StandardError)
       @flickr_collage = FlickrCollage.new(dir: '/')
-
       expect { @flickr_collage.save! }.to raise_exception(FlickrCollage::Errors::FileCannotBeSaved)
     end
   end
