@@ -19,13 +19,28 @@ For more details take a look at (https://github.com/rmagick/rmagick#prerequisite
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'flickr_collage', github: 'plaschczek/flickr_collage'
+gem 'flickr_collage'
 ```
 
 And then execute:
 
 ```console
 bundle
+```
+
+**Installing via Rubygems**
+
+```console
+gem install flickr_collage
+```
+
+**Installing from github**
+
+```console
+git clone https://github.com/plaschczek/flickr_collage
+cd flickr_collage
+bundle
+rake install
 ```
 
 ## Usage
