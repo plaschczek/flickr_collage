@@ -1,5 +1,7 @@
 # Flickr Collage
 
+[![Gem Version](https://badge.fury.io/rb/flickr_collage.svg)](https://badge.fury.io/rb/flickr_collage)
+
 **Flickr Collage** queries the Flickr API for the top-rated image by search keywords and assembles a collage grid from this images to a new file.
 
 ![](tmp/fruits.jpg)
