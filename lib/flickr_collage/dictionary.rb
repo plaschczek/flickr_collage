@@ -11,7 +11,8 @@ class FlickrCollage
       @path = value
     end
 
-    def self.words
+    def self.words(dic: nil)
+      @words = dic if dic # for overwriting system dictionary
       @words ||= File.open(@path.to_s).read.to_s.split("\n")
     rescue
       raise Errors::DictionaryNotFound

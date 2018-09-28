@@ -9,7 +9,8 @@ RSpec.describe FlickrCollage::Dictionary do
 
   context '.words' do
     it 'is an Array' do
-      expect(FlickrCollage::Dictionary.words).to be_an(Array)
+      expect(FlickrCollage::Dictionary.words).to be_an(Array) if RUBY_PLATFORM =~ /linux/
+      expect(FlickrCollage::Dictionary.words(dic: ['appel','cherry'])).to be_an(Array)
     end
 
     it 'raises an DictionaryNotFound Error unless dict is readable' do

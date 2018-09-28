@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'tempfile'
 
 RSpec.describe FlickrCollage::FileLoader do
   before do
