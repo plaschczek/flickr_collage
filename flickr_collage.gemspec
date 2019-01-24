@@ -21,7 +21,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'flickraw'
   spec.add_dependency 'rmagick'
-  spec.add_dependency 'highline'
+  spec.add_dependency 'highline', '2.0.1'
   spec.add_dependency 'cri'
 
   spec.add_development_dependency 'bundler', '~> 1.16'
