@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   spec.executables   = ['flickr_collage']
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'flickraw'
+  spec.add_dependency 'flickraw', '0.9.10'
   spec.add_dependency 'rmagick'
   spec.add_dependency 'highline'
   spec.add_dependency 'cri'
