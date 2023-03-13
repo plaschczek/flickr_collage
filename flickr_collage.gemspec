@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'flickraw'
-  spec.add_dependency 'rmagick'
+  spec.add_dependency 'rmagick', '5.2.0'
   spec.add_dependency 'highline'
   spec.add_dependency 'cri'
 
